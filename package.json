@@ -19,8 +19,14 @@
     "url": "https://github.com/Haliont/project-lvl3-s282/issues"
   },
   "homepage": "https://github.com/Haliont/project-lvl3-s282#readme",
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "^4.1.2",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.3"
+  },
   "devDependencies": {
+    "css-loader": "^1.0.0",
+    "style-loader": "^0.21.0",
     "babel-eslint": "^8.2.3",
     "babel-jest": "^22.4.3",
     "babel-loader": "^7.1.4",
