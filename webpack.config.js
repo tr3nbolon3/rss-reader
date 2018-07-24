@@ -2,11 +2,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
-  devtool: "source-map",
-  entry: "./src/index.js",
+  devtool: 'source-map',
+  entry: './src/index.js',
   output: {
-    path: __dirname + "/dist",
-    filename: "bundle.js"
+    path: `{${__dirname}/dist}`,
+    filename: 'bundle.js',
   },
   module: {
     rules: [
@@ -19,8 +19,8 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   plugins: [
