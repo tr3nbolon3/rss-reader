@@ -9,12 +9,24 @@
         <h1 class="display-4">RSS Reader</h1>
         <form>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Вставьте ссылку на rss поток" aria-label="Вставьте ссылку на rss поток" aria-describedby="basic-addon2">
+            <input data-rss="input" type="text" class="form-control" placeholder="Вставьте ссылку на rss-канал" aria-label="Вставьте ссылку на rss-канал" aria-describedby="basic-addon2">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button">Добавить</button>
+              <button data-rss="btn" class="btn btn-outline-secondary" type="button">Добавить</button>
             </div>
           </div>
         </form>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-3">
+          <h2>RSS-каналы</h2>
+          <div data-rss="channels"></div>
+        </div>
+        <div class="col-9">
+          <h2>Статьи</h2>
+          <div data-rss="articles"></div>
+        </div>
       </div>
     </div>
   </body>
