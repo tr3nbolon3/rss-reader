@@ -1,4 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import run from './controller';
+import 'bootstrap';
+import './index.css';
+import init from './application';
 
-run();
+init();
