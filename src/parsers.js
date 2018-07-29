@@ -21,7 +21,7 @@ const parseRSS = (rssData) => {
 
   const titleEl = searchInXML('title');
   const descEl = searchInXML('description');
-  const linkEl = searchInXML('link');
+  const [linkEl] = xml.getElementsByTagName('link');
   const articleElms = xml.querySelectorAll('item');
 
   const articles = parseArticles([...articleElms]);

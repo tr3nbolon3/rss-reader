@@ -48,7 +48,9 @@ export const renderChannel = ({ title, desc, siteURL }) => {
       <div class="card-body">
         <h5 class="card-title">${title}</h5>
         <p class="card-text">${desc}</p>
-        <a href="${siteURL}" class="card-link">Перейти на сайт</a>
+        <a href="${siteURL}" target="_blank" class="card-link">
+          Перейти на сайт
+        </a>
       </div>
     </div>
   `;

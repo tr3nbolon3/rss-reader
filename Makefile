@@ -14,6 +14,7 @@ build:
 lint:
 	npm run eslint .
 
-publish:
-	npm publish
+deploy:
+	make build
+	surge ./dist rss-z.surge.sh
 
