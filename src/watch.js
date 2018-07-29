@@ -34,4 +34,8 @@ export default (state) => {
     const { modalData } = state;
     renderModal(modalData);
   });
+
+  watch(state, 'newArticles', () => {
+    renderArticles([...state.newArticles]);
+  });
 };

@@ -1,7 +1,8 @@
 import { getText } from './utils';
 
-const parseArticles = articles => articles
-  .map((article) => {
+export const parseArticles = (xml) => {
+  const articles = xml.querySelectorAll('item');
+  return [...articles].map((article) => {
     const titleEl = article.querySelector('title');
     const linkEl = article.querySelector('link');
     const descEl = article.querySelector('description');
@@ -12,8 +13,9 @@ const parseArticles = articles => articles
       desc: getText(descEl),
     };
   });
+};
 
-const parseRSS = (rssData) => {
+export const parseRSS = (rssData) => {
   const parser = new DOMParser();
   const xml = parser.parseFromString(rssData, 'application/xml');
 
@@ -22,9 +24,8 @@ const parseRSS = (rssData) => {
   const titleEl = searchInXML('title');
   const descEl = searchInXML('description');
   const [linkEl] = xml.getElementsByTagName('link');
-  const articleElms = xml.querySelectorAll('item');
 
-  const articles = parseArticles([...articleElms]);
+  const articles = parseArticles(xml);
 
   return {
     link: getText(linkEl),
@@ -33,5 +34,3 @@ const parseRSS = (rssData) => {
     articles,
   };
 };
-
-export default parseRSS;

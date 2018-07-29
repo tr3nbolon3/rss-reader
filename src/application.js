@@ -1,22 +1,23 @@
 import $ from 'jquery';
 import watch from './watch';
 
-import startState, {
+import {
   isValidURL,
   addChannel,
+  updateChannels,
 } from './rss';
 
 import {
-  getInput,
-  getAddBtn,
-  getModal,
+  getInputElem,
+  getAddBtnElem,
+  getModalElem,
 } from './view';
 
-const init = (_state) => {
+export default (_state) => {
   const state = _state;
-  const input = getInput();
-  const addBtn = getAddBtn();
-  const modal = getModal();
+  const input = getInputElem();
+  const addBtn = getAddBtnElem();
+  const modal = getModalElem();
 
   const handleInput = ({ target }) => {
     const url = target.value;
@@ -54,6 +55,5 @@ const init = (_state) => {
   $(modal).on('show.bs.modal', handleDescBtn);
 
   watch(state);
+  updateChannels(state);
 };
-
-export default () => init(startState);

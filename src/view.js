@@ -1,13 +1,13 @@
 import { query, createElemFromStr } from './utils';
 
-export const getInput = () => query('[data-rss="input"]');
-export const getAddBtn = () => query('[data-rss="btn"]');
-export const getChannelList = () => query('[data-rss="channels"]');
-export const getArticleList = () => query('[data-rss="articles"]');
-export const getModal = () => query('[data-rss="desc-modal"]');
+export const getInputElem = () => query('[data-rss="input"]');
+export const getAddBtnElem = () => query('[data-rss="btn"]');
+export const getChannelListElem = () => query('[data-rss="channels"]');
+export const getArticleListElem = () => query('[data-rss="articles"]');
+export const getModalElem = () => query('[data-rss="desc-modal"]');
 
 export const renderValidErr = (inputStatus) => {
-  const input = getInput();
+  const input = getInputElem();
 
   let method;
   if (inputStatus === 'valid' || inputStatus === 'empty') {
@@ -32,17 +32,17 @@ export const renderLoadErr = () => {
 };
 
 export const clearInput = () => {
-  const input = getInput();
+  const input = getInputElem();
   input.value = '';
 };
 
 export const renderLoading = (isLoading) => {
-  const addBtn = getAddBtn();
+  const addBtn = getAddBtnElem();
   addBtn.textContent = isLoading ? 'Загрузка...' : 'Добавить';
 };
 
 export const renderChannel = ({ title, desc, siteURL }) => {
-  const channelList = getChannelList();
+  const channelList = getChannelListElem();
   const channelTemplate = `
     <div class="card mb-2">
       <div class="card-body">
@@ -78,13 +78,13 @@ const createDescBtn = (link, title, desc) => {
 };
 
 export const renderArticles = (articles) => {
-  const articleList = getArticleList();
+  const articleList = getArticleListElem();
   const reversed = articles.reverse();
   reversed.forEach(({ link, title, desc }) => {
     const articleTemplate = `
       <div class="card mb-2">
         <div class="card-body d-flex align-items-center">
-          <a href="${link}" target="_blank" class="card-link">
+          <a href="${link}" target="_blank" class="card-link mr-10">
             ${title}
           </a>
         </div>
@@ -100,7 +100,7 @@ export const renderArticles = (articles) => {
 };
 
 export const renderModal = ({ link, title, desc }) => {
-  const modal = getModal();
+  const modal = getModalElem();
 
   const titleEl = modal.querySelector('.modal-title');
   const bodyEl = modal.querySelector('.modal-body');

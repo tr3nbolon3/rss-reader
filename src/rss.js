@@ -1,14 +1,9 @@
 import isURL from 'validator/lib/isURL';
 import axios from 'axios';
-import parseRSS from './parsers';
+import { parseRSS } from './parsers';
 
-const startState = {
-  loadingStatus: 'pending',
-  inputValue: '',
-  inputStatus: 'empty',
-  modalData: { title: '', desc: '', link: '' },
-  channels: [],
-};
+const buildURL = channelURL =>
+  `https://cors-anywhere.herokuapp.com/${channelURL}`;
 
 export const getLastChannel = (channels) => {
   const lastChannelIndex = channels.length - 1;
@@ -24,8 +19,30 @@ export const isValidURL = (channels, url) => {
   return !sameChannel;
 };
 
-const buildURL = channelURL =>
-  `https://cors-anywhere.herokuapp.com/${channelURL}`;
+export const updateChannels = (_state) => {
+  const state = _state;
+  const update = () => {
+    if (!state.channels.length) {
+      return;
+    }
+    state.channels.forEach(({ rssURL, articles }) => {
+      axios.get(buildURL(rssURL))
+        .then((res) => {
+          const updatedArticles = parseRSS(res.data).articles;
+          const newArticles = updatedArticles.filter(({ link }) =>
+            (!articles.find(item => item.link === link)));
+
+          if (newArticles.length) {
+            articles.push(...newArticles);
+            console.log(newArticles);
+            state.newArticles = newArticles;
+          }
+        })
+        .catch(err => console.log(err));
+    });
+  };
+  setInterval(update, 1000 * 5);
+};
 
 export const addChannel = (_state) => {
   const state = _state;
@@ -51,5 +68,3 @@ export const addChannel = (_state) => {
       state.loadingStatus = 'error';
     });
 };
-
-export default startState;
