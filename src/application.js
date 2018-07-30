@@ -4,7 +4,7 @@ import watch from './watch';
 import {
   isValidURL,
   addChannel,
-  updateChannels,
+  refreshArticles,
 } from './rss';
 
 import {
@@ -13,8 +13,17 @@ import {
   getModalElem,
 } from './view';
 
-export default (_state) => {
-  const state = _state;
+export default () => {
+  const state = {
+    loadingStatus: 'pending',
+    updatingStatus: 'pending',
+    inputValue: '',
+    inputStatus: 'empty',
+    modalData: { title: '', desc: '', link: '' },
+    newArticles: [],
+    channels: [],
+  };
+
   const input = getInputElem();
   const addBtn = getAddBtnElem();
   const modal = getModalElem();
@@ -34,7 +43,6 @@ export default (_state) => {
 
   const handleAddBtn = () => {
     if (!(state.inputStatus === 'valid')) {
-      console.log('адресс введен некоректно');
       return;
     }
     addChannel(state);
@@ -55,5 +63,5 @@ export default (_state) => {
   $(modal).on('show.bs.modal', handleDescBtn);
 
   watch(state);
-  updateChannels(state);
+  refreshArticles(state);
 };

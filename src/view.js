@@ -19,16 +19,16 @@ export const renderValidErr = (inputStatus) => {
   input.classList[method]('is-invalid');
 };
 
-export const renderLoadErr = () => {
-  const errorTemplate = `
-    <div class="alert alert-danger mb-0 w-100 position-absolute" role="alert">
-      Что-то пошло не так, попробуйте снова.
+export const renderInfoMessage = (type, message) => {
+  const messageTemplate = `
+    <div class="alert alert-${type} mb-0 w-100 position-absolute" role="alert">
+      ${message}
     </div>
   `;
-  const errorEl = createElemFromStr(errorTemplate);
+  const errorEl = createElemFromStr(messageTemplate);
   const docBody = document.body;
   docBody.prepend(errorEl);
-  setTimeout(() => docBody.removeChild(errorEl), 1000 * 5);
+  setTimeout(() => docBody.removeChild(errorEl), 5000);
 };
 
 export const clearInput = () => {
@@ -37,8 +37,18 @@ export const clearInput = () => {
 };
 
 export const renderLoading = (isLoading) => {
+  const input = getInputElem();
   const addBtn = getAddBtnElem();
-  addBtn.textContent = isLoading ? 'Загрузка...' : 'Добавить';
+
+  if (isLoading) {
+    input.setAttribute('disabled', true);
+    addBtn.setAttribute('disabled', true);
+    addBtn.textContent = 'Загрузка...';
+  } else {
+    input.removeAttribute('disabled');
+    addBtn.removeAttribute('disabled');
+    addBtn.textContent = 'Добавить';
+  }
 };
 
 export const renderChannel = ({ title, desc, siteURL }) => {

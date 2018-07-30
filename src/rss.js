@@ -1,5 +1,6 @@
 import isURL from 'validator/lib/isURL';
 import axios from 'axios';
+import { flatten } from 'lodash';
 import { parseRSS } from './parsers';
 
 export const getLastChannel = (channels) => {
@@ -20,31 +21,46 @@ const fetchChannel = url => axios
   .get(`https://cors-anywhere.herokuapp.com/${url}`)
   .then(res => parseRSS(res.data));
 
-export const updateChannels = (_state) => {
+const updateArticles = (channels) => {
+  const newArticles = channels.map(({ rssURL, articles }) =>
+    fetchChannel(rssURL).then((dataRSS) => {
+      const updatedArticles = dataRSS.articles;
+      const newChannelArticles = updatedArticles
+        .filter(({ link }) => !articles.find(item => item.link === link));
+
+      if (newChannelArticles.length) {
+        articles.push(...newChannelArticles);
+      }
+
+      return newChannelArticles;
+    }));
+
+  return Promise.all(newArticles).then(data => flatten(data));
+};
+
+export const refreshArticles = (_state) => {
   const state = _state;
+  const refresh = () => setTimeout(refreshArticles, 1000 * 5, state);
 
-  const update = () => {
-    if (!state.channels.length) {
-      return;
-    }
-    state.channels.forEach(({ rssURL, articles }) =>
-      fetchChannel(rssURL)
-        .then((dataRSS) => {
-          const updatedArticles = dataRSS.articles;
-          const newArticles = updatedArticles.filter(({ link }) =>
-            (!articles.find(item => item.link === link)));
-
-          if (!newArticles.length) {
-            return;
-          }
-
-          articles.push(...newArticles);
-          state.newArticles = newArticles;
-        })
-        .catch(err => console.log(err)));
-  };
-
-  setInterval(update, 1000 * 5);
+  if (!state.channels.length) {
+    refresh();
+    return;
+  }
+  state.updatingStatus = 'load';
+  updateArticles(state.channels)
+    .then((articles) => {
+      if (!articles.length) {
+        return;
+      }
+      state.newArticles = articles;
+      state.updatingStatus = 'pending';
+    })
+    .catch(() => {
+      state.updatingStatus = 'error';
+    })
+    .finally(() => {
+      refresh();
+    });
 };
 
 export const addChannel = (_state) => {
@@ -64,6 +80,7 @@ export const addChannel = (_state) => {
 
       state.channels.push(channel);
       state.loadingStatus = 'pending';
+      state.inputStatus = 'empty';
     })
     .catch(() => {
       state.loadingStatus = 'error';

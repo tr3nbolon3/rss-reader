@@ -2,7 +2,7 @@ import { watch } from 'melanke-watchjs';
 import { getLastChannel } from './rss';
 import {
   renderValidErr,
-  renderLoadErr,
+  renderInfoMessage,
   renderLoading,
   renderChannel,
   clearInput,
@@ -20,22 +20,30 @@ export default (state) => {
       renderLoading(true);
     } else if (state.loadingStatus === 'pending') {
       const addedChannel = getLastChannel(state.channels);
+      const { title, articles } = addedChannel;
       clearInput();
       renderLoading(false);
       renderChannel(addedChannel);
-      renderArticles(addedChannel.articles);
+      renderArticles(articles);
+      renderInfoMessage('success', `Вы подписались на ${title}!`);
     } else if (state.loadingStatus === 'error') {
       renderLoading(false);
-      renderLoadErr();
+      renderInfoMessage('danger', 'Во время загрузки произошла ошибка. Попоробуйте снова!');
     }
+  });
+
+  watch(state, 'updatingStatus', () => {
+    console.log(state.updatingStatus);
+    if (!(state.updatingStatus === 'pending')) {
+      return;
+    }
+
+    renderArticles(state.newArticles);
+    renderInfoMessage('primary', 'Список статей обновлен');
   });
 
   watch(state, 'modalData', () => {
     const { modalData } = state;
     renderModal(modalData);
-  });
-
-  watch(state, 'newArticles', () => {
-    renderArticles([...state.newArticles]);
   });
 };
