@@ -3,3 +3,26 @@
   max-width: 100%;
   height: auto;
 }
+
+.spinner {
+  animation: spinAround .5s infinite linear;
+  border: 2px solid #0f0;
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  content: "";
+  display: block;
+  height: 1em;
+  position: relative;
+  width: 1em;
+}
+
+@keyframes spinAround {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
