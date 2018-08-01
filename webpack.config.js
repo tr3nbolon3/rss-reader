@@ -1,8 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const prod = process.env.NODE_ENV;
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
-  devtool: 'source-map',
+  mode: prod || 'development',
+  devtool: prod ? 'nosources-source-map' : 'eval',
   module: {
     rules: [
       {
