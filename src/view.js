@@ -43,11 +43,11 @@ export const renderLoading = (isLoading) => {
   if (isLoading) {
     input.setAttribute('disabled', true);
     addBtn.setAttribute('disabled', true);
-    addBtn.textContent = 'Загрузка...';
+    addBtn.innerHTML = '<div class="spinner"></div>';
   } else {
     input.removeAttribute('disabled');
     addBtn.removeAttribute('disabled');
-    addBtn.textContent = 'Добавить';
+    addBtn.innerHTML = 'Добавить';
   }
 };
 

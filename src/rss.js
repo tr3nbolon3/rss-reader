@@ -23,8 +23,7 @@ const fetchChannel = url => axios
 
 const updateArticles = (channels) => {
   const newArticles = channels.map(({ rssURL, articles }) =>
-    fetchChannel(rssURL).then((dataRSS) => {
-      const updatedArticles = dataRSS.articles;
+    fetchChannel(rssURL).then(({ articles: updatedArticles }) => {
       const newChannelArticles = updatedArticles
         .filter(({ link }) => !articles.find(item => item.link === link));
 
@@ -69,12 +68,10 @@ export const addChannel = (_state) => {
   state.loadingStatus = 'load';
 
   return fetchChannel(channelURL)
-    .then((dataRSS) => {
+    .then(({ link, ...rest }) => {
       const channel = {
-        title: dataRSS.title,
-        desc: dataRSS.desc,
-        articles: dataRSS.articles,
-        siteURL: dataRSS.link,
+        ...rest,
+        siteURL: link,
         rssURL: channelURL,
       };
 

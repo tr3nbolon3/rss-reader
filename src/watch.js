@@ -33,7 +33,6 @@ export default (state) => {
   });
 
   watch(state, 'updatingStatus', () => {
-    console.log(state.updatingStatus);
     if (!(state.updatingStatus === 'pending')) {
       return;
     }
