@@ -2,7 +2,7 @@ install:
 	install-deps
 
 develop:
-	npm run webpack-serve
+	npm run webpack -- --watch
 
 install-deps:
 	npm install

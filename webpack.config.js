@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 
 const prod = process.env.NODE_ENV;
 module.exports = {
@@ -22,6 +23,11 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/static/index.html',
+    }),
+    new BrowserSyncPlugin({
+      host: 'localhost',
+      port: 3000,
+      server: { baseDir: ['dist'] },
     }),
   ],
 };
