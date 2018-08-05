@@ -1,19 +1,28 @@
-import { query, createElemFromStr } from './utils';
+export const getInputElem = () => document.querySelector('[data-rss="input"]');
+export const getAddBtnElem = () => document.querySelector('[data-rss="btn"]');
+export const getChannelListElem = () => document.querySelector('[data-rss="channels"]');
+export const getArticleListElem = () => document.querySelector('[data-rss="articles"]');
+export const getModalElem = () => document.querySelector('[data-rss="desc-modal"]');
 
-export const getInputElem = () => query('[data-rss="input"]');
-export const getAddBtnElem = () => query('[data-rss="btn"]');
-export const getChannelListElem = () => query('[data-rss="channels"]');
-export const getArticleListElem = () => query('[data-rss="articles"]');
-export const getModalElem = () => query('[data-rss="desc-modal"]');
+const createElemFromStr = (str) => {
+  const div = document.createElement('div');
+  div.innerHTML = str;
+  return div.firstElementChild;
+};
 
 export const renderValidErr = (inputStatus) => {
   const input = getInputElem();
 
   let method;
-  if (inputStatus === 'valid' || inputStatus === 'empty') {
-    method = 'remove';
-  } else if (inputStatus === 'invalid') {
-    method = 'add';
+  switch (inputStatus) {
+    case 'invalid':
+      method = 'add';
+      break;
+    case 'valid':
+    case 'empty':
+    default:
+      method = 'remove';
+      break;
   }
 
   input.classList[method]('is-invalid');
@@ -21,14 +30,17 @@ export const renderValidErr = (inputStatus) => {
 
 export const renderInfoMessage = (type, message) => {
   const messageTemplate = `
-    <div class="alert alert-${type} mb-0 w-100 position-absolute" role="alert">
+    <div
+      class="alert alert-${type} mb-0 w-100 position-absolute"
+      role="alert"
+    >
       ${message}
     </div>
   `;
-  const errorEl = createElemFromStr(messageTemplate);
+  const infoEl = createElemFromStr(messageTemplate);
   const docBody = document.body;
-  docBody.prepend(errorEl);
-  setTimeout(() => docBody.removeChild(errorEl), 5000);
+  docBody.prepend(infoEl);
+  setTimeout(() => docBody.removeChild(infoEl), 5000);
 };
 
 export const clearInput = () => {

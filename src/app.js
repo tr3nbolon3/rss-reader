@@ -42,7 +42,7 @@ export default () => {
   };
 
   const handleAddBtn = () => {
-    if (!(state.inputStatus === 'valid')) {
+    if (state.inputStatus !== 'valid') {
       return;
     }
     addChannel(state);

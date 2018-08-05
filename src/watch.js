@@ -16,24 +16,30 @@ export default (state) => {
   });
 
   watch(state, 'loadingStatus', () => {
-    if (state.loadingStatus === 'load') {
-      renderLoading(true);
-    } else if (state.loadingStatus === 'pending') {
-      const addedChannel = getLastChannel(state.channels);
-      const { title, articles } = addedChannel;
-      clearInput();
-      renderLoading(false);
-      renderChannel(addedChannel);
-      renderArticles(articles);
-      renderInfoMessage('success', `Вы подписались на ${title}!`);
-    } else if (state.loadingStatus === 'error') {
-      renderLoading(false);
-      renderInfoMessage('danger', 'Во время загрузки произошла ошибка. Попоробуйте снова!');
+    switch (state.loadingStatus) {
+      case 'load':
+        renderLoading(true);
+        break;
+      case 'error':
+        renderLoading(false);
+        renderInfoMessage('danger', 'Во время загрузки произошла ошибка. Попоробуйте снова!');
+        break;
+      case 'pendign':
+      default: {
+        const addedChannel = getLastChannel(state.channels);
+        const { title, articles } = addedChannel;
+        clearInput();
+        renderLoading(false);
+        renderChannel(addedChannel);
+        renderArticles(articles);
+        renderInfoMessage('success', `Вы подписались на ${title}!`);
+        break;
+      }
     }
   });
 
   watch(state, 'updatingStatus', () => {
-    if (!(state.updatingStatus === 'pending')) {
+    if (state.updatingStatus !== 'pending') {
       return;
     }
 

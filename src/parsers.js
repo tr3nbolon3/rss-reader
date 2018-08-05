@@ -1,5 +1,3 @@
-import { getText } from './utils';
-
 export const parseArticles = (xml) => {
   const articles = xml.querySelectorAll('item');
   return [...articles].map((article) => {
@@ -8,9 +6,9 @@ export const parseArticles = (xml) => {
     const descEl = article.querySelector('description');
 
     return {
-      title: getText(titleEl),
-      link: getText(linkEl),
-      desc: getText(descEl),
+      title: titleEl.textContent,
+      link: linkEl.textContent,
+      desc: descEl.textContent,
     };
   });
 };
@@ -28,9 +26,9 @@ export const parseRSS = (rssData) => {
   const articles = parseArticles(xml);
 
   return {
-    link: getText(linkEl),
-    title: getText(titleEl),
-    desc: getText(descEl),
+    link: linkEl.textContent,
+    title: titleEl.textContent,
+    desc: descEl.textContent,
     articles,
   };
 };
