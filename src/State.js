@@ -1,3 +1,4 @@
+// Если вы смотрите этот файл -- знайте -- он никак не учавствует в работе приложения.
 export default class State {
   constructor() {
     this.loadingStatus = 'pending';
